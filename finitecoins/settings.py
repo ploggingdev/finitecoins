@@ -20,7 +20,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '+=m2q@%pxr69=$8%*5*p_iz)e^=@3!7a0=h7y@i9&(x!jkn*om'
+SECRET_KEY = os.environ['finitecoins_secret_key']
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -75,8 +75,13 @@ WSGI_APPLICATION = 'finitecoins.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.environ['finitecoins_db_name'],
+        'USER': os.environ['finitecoins_db_user'],
+        'PASSWORD': os.environ['finitecoins_db_password'],
+        'HOST': os.environ['finitecoins_db_url'],
+        'PORT': '5432',
+        'CONN_MAX_AGE' : 60
     }
 }
 
@@ -118,3 +123,37 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
+
+LOGIN_URL = '/login/'
+
+LOGIN_REDIRECT_URL = '/'
+
+EMAIL_BACKEND = 'postmarker.django.EmailBackend'
+
+POSTMARK = {
+    'TOKEN': os.environ['finitecoins_postmark_token'],
+    'TEST_MODE': False,
+}
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [os.environ.get('redis_url', 'redis://localhost:6379')],
+        },
+    },
+}
+
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": [os.environ.get('redis_url', 'redis://localhost:6379')],
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        }
+    }
+}
+
+RECAPTCHA_SECRET_KEY = os.environ['finitecoins_recaptcha_secret_key']
