@@ -31,12 +31,18 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'mainapp.apps.MainappConfig',
+    'user_auth.apps.UserAuthConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'widget_tweaks',
+    'channels',
+    'reversion',
+    'django.contrib.postgres',
 ]
 
 MIDDLEWARE = [
@@ -157,3 +163,5 @@ CACHES = {
 }
 
 RECAPTCHA_SECRET_KEY = os.environ['finitecoins_recaptcha_secret_key']
+
+ASGI_APPLICATION = "mainapp.routing.application"
