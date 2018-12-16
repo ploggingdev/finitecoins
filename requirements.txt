@@ -10,7 +10,7 @@ channels-redis==2.3.2
 chardet==3.0.4
 Click==7.0
 constantly==15.1.0
-daphne==2.2.3
+daphne==2.2.4
 Django==2.1.4
 django-redis==4.10.0
 django-reversion==3.0.2
