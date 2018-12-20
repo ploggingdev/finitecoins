@@ -4,6 +4,8 @@ async-timeout==3.0.1
 attrs==18.2.0
 autobahn==18.11.2
 Automat==0.7.0
+boto3==1.9.69
+botocore==1.12.69
 certifi==2018.11.29
 channels==2.1.6
 channels-redis==2.3.2
@@ -15,6 +17,7 @@ Django==2.1.4
 django-redis==4.10.0
 django-reversion==3.0.2
 django-widget-tweaks==1.4.3
+docutils==0.14
 gunicorn==19.9.0
 h11==0.8.1
 hiredis==0.3.0
@@ -22,14 +25,17 @@ httptools==0.0.11
 hyperlink==18.0.0
 idna==2.8
 incremental==17.5.0
+jmespath==0.9.3
 msgpack==0.5.6
 pkg-resources==0.0.0
 postmarker==0.13.0
 psycopg2-binary==2.7.6.1
 PyHamcrest==1.9.0
+python-dateutil==2.7.5
 pytz==2018.7
 redis==3.0.1
 requests==2.21.0
+s3transfer==0.1.13
 six==1.12.0
 Twisted==18.9.0
 txaio==18.8.1
