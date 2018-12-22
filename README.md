@@ -45,7 +45,7 @@ ALTER USER finitecoinsuser WITH SUPERUSER;
 Setup the finitecoins project :
 
 ```
-git clone git@gitlab.com:ploggingdev/finitecoins.git
+git clone https://github.com/ploggingdev/finitecoins.git
 
 sudo apt install python3-venv
 
