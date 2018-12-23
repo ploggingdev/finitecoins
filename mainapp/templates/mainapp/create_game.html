@@ -1,0 +1,28 @@
+{% extends "registration/base.html" %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block title %}Create a game{% endblock %}
+{% block meta_description %}Create a new game on Finite Coins.{% endblock %}
+{% block content %}
+<br/>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-6 offset-sm-3 col-lg-4 offset-lg-4">
+            {% include "registration/errors_and_messages.html" %}
+            <br/>
+            <h4>Create a new game</h4>
+            <br/>
+            <form action="" method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    {{ form.name |attr:"placeholder:Game name" |add_class:"form-control" |attr:"autofocus" }}
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+            <br/>
+            <br/>
+        </div>
+    </div>
+</div>
+{% endblock %}
