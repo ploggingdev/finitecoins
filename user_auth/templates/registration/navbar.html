@@ -10,6 +10,9 @@
             <a class="nav-link active" href="{% url 'mainapp:about' %}" style="color:white;">About</a>
         </li>
          {% if user.is_authenticated %}
+         <li class="nav-item">
+            <a class="nav-link" href="{% url 'mainapp:dev_games' %}" style="color:white;">Dev</a>
+        </li>
         <li class="nav-item">
             <a class="nav-link" href="{% url 'user_auth:profile' %}" style="color:white;">Profile</a>
         </li>
