@@ -9,6 +9,7 @@ from django.utils.text import slugify
 class Game(models.Model):
     name = models.CharField(max_length=30, unique=True, validators=[RegexValidator(r'^[a-zA-Z0-9 ]+$', "Only lower case, upper case letters, numbers and spaces are allowed")])
     description = models.CharField(max_length=1000, null=True, blank=True ,validators=[RegexValidator(r'^[a-zA-Z0-9 ]+$', "Only lower case, upper case letters, numbers and spaces are allowed")])
+    description_html = models.TextField(null=True, blank=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     public = models.BooleanField(default=False)
     deleted = models.BooleanField(default=False)
