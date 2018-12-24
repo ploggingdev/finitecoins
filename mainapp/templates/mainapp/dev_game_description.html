@@ -1,0 +1,40 @@
+{% extends "registration/base.html" %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block title %}Description | {{ game.name }}{% endblock %}
+{% block meta_description %}Description | {{ game.name }}{% endblock %}
+{% block extra_css %}
+    <link rel="stylesheet" type="text/css" href='{% static "css/arrow-nav.css" %}'>
+{% endblock %}
+{% block content %}
+<br/>
+<div class="container-fluid">
+    <div class="text-center" id="nav-btn-container">
+        <a role="button" class="btn btn-primary btn-arrow-right" href="{% url 'mainapp:dev_game_description' game.id %}">Description</a>
+        <a role="button" class="btn btn-secondary btn-arrow-right">Upload files</a>
+        <a role="button" class="btn btn-secondary btn-arrow-right">Upload thumbnails</a>
+        <a role="button" class="btn btn-secondary btn-arrow-right">Game dimensions</a>
+        <a role="button" class="btn btn-secondary btn-arrow-right">Preview</a>
+        <a role="button" class="btn btn-secondary btn-arrow-right">Submit for review</a>
+    </div>
+    <br/>
+    <div class="row">
+        <div class="col-sm-8 offset-sm-2 col-xl-6 offset-xl-3">
+            {% include "registration/errors_and_messages.html" %}
+            <br/>
+            <h4>Set the game description</h4>
+            <br/>
+            <form action="" method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    {{ form.description |attr:"placeholder:Game description" |add_class:"form-control" |attr:"autofocus" }}
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+            <br/>
+            <br/>
+        </div>
+    </div>
+</div>
+{% endblock %}

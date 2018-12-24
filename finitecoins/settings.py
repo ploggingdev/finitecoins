@@ -165,3 +165,5 @@ CACHES = {
 RECAPTCHA_SECRET_KEY = os.environ['finitecoins_recaptcha_secret_key']
 
 ASGI_APPLICATION = "mainapp.routing.application"
+
+COMMENT_TAGS = ['a','p','blockquote', 'code', 'em', 'strong', 'li','ol','ul', 'pre']

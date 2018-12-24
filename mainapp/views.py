@@ -5,9 +5,12 @@ from mainapp.models import Game, StaticResource
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.conf import settings
-from mainapp.forms import CreateGameForm
+from mainapp.forms import CreateGameForm, DevGameDescriptionForm
 from django.contrib import messages
 from django.urls import reverse
+import markdown
+import bleach
+from bs4 import BeautifulSoup
 
 class IndexView(View):
     
@@ -68,3 +71,60 @@ class CreateGame(LoginRequiredMixin, View):
         else:
             messages.error(request, "Invalid form data. Only letters and numbers are allowed.")
             return render(request, self.template_name, {'form' : self.form_class()})
+
+class DevGameDescription(LoginRequiredMixin, View):
+
+    login_url = settings.LOGIN_URL
+    template_name = "mainapp/dev_game_description.html"
+    form_class = DevGameDescriptionForm
+
+    def get(self, request, game_id):
+        game = Game.objects.get(id=game_id)
+        if game.user != request.user:
+            messages.error(request ,"You can't edit someone else's game. Try creating your own game instead!")
+            return redirect(reverse("mainapp:create_game"))
+
+        data = {'description' : game.description}
+        form = self.form_class(initial = data)
+
+        return render(request, self.template_name, {'form' : form, 'game' : game})
+    
+    def post(self, request, game_id):
+        
+        game = Game.objects.get(id=game_id)
+        if game.user != request.user:
+            messages.error(request ,"You can't edit someone else's game. Try creating your own game instead!")
+            return redirect(reverse("mainapp:create_game"))
+
+        data = {'description' : game.description}
+
+        form = self.form_class(request.POST, initial = data)
+        
+        if game.deleted:
+            messages.error(request ,"You can't edit a deleted game!")
+            return redirect(reverse("mainapp:dev_games"))
+        if form.is_valid():
+            if form.has_changed():
+                description = form.cleaned_data['description']
+                description_html = markdown.markdown(description)
+                description_html = bleach.clean(description_html, tags=settings.COMMENT_TAGS, strip=True)
+                soup = BeautifulSoup(description_html, "html.parser")
+                for i in soup.find_all('a'):
+                    i['target'] = '_blank'
+                    i['rel'] = 'noopener noreferrer nofollow'
+                for i in soup.find_all('blockquote'):
+                    i['class'] = 'blockquote'
+                description_html = soup.prettify()
+                
+                game.description = description
+                game.description_html = description_html
+
+                game.save()
+                messages.success(request, "Game description successfully updated")
+                return redirect(reverse('mainapp:dev_game_description', args=[game_id]))
+            else:
+                messages.info(request, "Data has not been changed")
+                return redirect(reverse('mainapp:dev_game_description', args=[game_id]))
+        else:
+            messages.info(request, "Invalid form sumbission")
+            return redirect(reverse('mainapp:dev_game_description', args=[game_id]))
